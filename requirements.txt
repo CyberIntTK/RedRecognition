@@ -1,0 +1,20 @@
+# Dependencias para Red Recognition
+# Script de reconocimiento de red para pentesting
+
+# Escaneo de red y manipulación de paquetes
+scapy>=2.5.0
+
+# Escaneo de puertos y servicios
+python-nmap>=0.7.1
+
+# Información de interfaces de red
+netifaces>=0.11.0
+
+# Requests para obtener IP pública
+requests>=2.31.0
+
+# Nota: También se requiere tener instalado nmap en el sistema
+# Windows: Descargar desde https://nmap.org/download.html
+# Linux: sudo apt-get install nmap
+# macOS: brew install nmap
+
