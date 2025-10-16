@@ -1,5 +1,9 @@
 # Dependencias para Red Recognition
-# Script de reconocimiento de red para pentesting
+# Script de reconocimiento de red y descarga de archivos compartidos para pentesting
+
+# ============================================
+# MÓDULO 1: Reconocimiento de Red
+# ============================================
 
 # Escaneo de red y manipulación de paquetes
 scapy>=2.5.0
@@ -10,11 +14,20 @@ python-nmap>=0.7.1
 # Información de interfaces de red
 netifaces>=0.11.0
 
-# Requests para obtener IP pública
+# Requests para obtener IP pública y HTTP
 requests>=2.31.0
 
-# Nota: También se requiere tener instalado nmap en el sistema
-# Windows: Descargar desde https://nmap.org/download.html
-# Linux: sudo apt-get install nmap
-# macOS: brew install nmap
+# ============================================
+# MÓDULO 2: Descarga de Archivos Compartidos
+# ============================================
+
+# Acceso a recursos compartidos SMB/SAMBA
+pysmb>=1.2.9
+
+# Nota: FTP es parte de la librería estándar de Python
+
+# ============================================
+# Dependencias del Sistema
+# ============================================
+# Kali Linux: sudo apt-get install python3 python3-pip nmap wireless-tools network-manager
 

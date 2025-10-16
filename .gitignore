@@ -1,11 +1,18 @@
-# Archivos de resultados
+# Archivos de resultados - Módulo 1
 reconocimiento.json
 scan_*.json
 escaneo_*.json
 auditoria_*.json
 pentest_*.json
 *_scan_*.json
+
+# Archivos de resultados - Módulo 2
+archivos_descargados.json
+harvested_files/
+
+# Otros JSON generados
 *.json
+!requirements.json
 
 # Python
 __pycache__/

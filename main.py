@@ -12,6 +12,7 @@ import json
 import argparse
 from datetime import datetime
 from modules.network_recon import NetworkRecon
+from modules.file_harvester import FileHarvester
 
 def print_banner():
     """Muestra el banner de la aplicación"""
@@ -95,15 +96,63 @@ Ejemplos de uso:
         action='store_true',
         help='Solo mostrar información de la red WiFi y salir'
     )
+    parser.add_argument(
+        '--module',
+        '-m',
+        type=int,
+        choices=[1, 2],
+        default=1,
+        help='Módulo a ejecutar: 1=Reconocimiento (default), 2=Descarga de archivos'
+    )
+    parser.add_argument(
+        '--recon-file',
+        default='reconocimiento.json',
+        help='Archivo de reconocimiento para Módulo 2 (default: reconocimiento.json)'
+    )
+    parser.add_argument(
+        '--max-file-size',
+        type=int,
+        default=10,
+        help='Tamaño máximo de archivo a descargar en MB (default: 10)'
+    )
+    parser.add_argument(
+        '--max-files',
+        type=int,
+        default=100,
+        help='Máximo de archivos por host (default: 100)'
+    )
     
     args = parser.parse_args()
     
     try:
-        # Inicializar el módulo de reconocimiento
-        print(f"[*] Inicializando módulo de reconocimiento...")
+        # MÓDULO 2: Descarga de Archivos
+        if args.module == 2:
+            print(f"[*] Ejecutando Módulo 2: File Harvester")
+            print(f"[*] Archivo de reconocimiento: {args.recon_file}\n")
+            
+            harvester = FileHarvester(
+                reconnaissance_file=args.recon_file,
+                output_dir="harvested_files",
+                output_json="archivos_descargados.json"
+            )
+            
+            # Convertir MB a bytes
+            max_size_bytes = args.max_file_size * 1024 * 1024
+            
+            harvester.run_harvesting(
+                max_file_size=max_size_bytes,
+                max_files_per_host=args.max_files
+            )
+            
+            print(f"\n[✓] Módulo 2 completado")
+            print(f"[✓] Archivos guardados en: harvested_files/")
+            print(f"[✓] Resultados en: archivos_descargados.json\n")
+            return
+        
+        # MÓDULO 1: Reconocimiento de Red
+        print(f"[*] Ejecutando Módulo 1: Reconocimiento de Red")
         print(f"[*] Archivo de salida: {args.output}\n")
         
-        # Módulo 1: Reconocimiento de Red
         recon = NetworkRecon(
             output_file=args.output,
             interface=args.interface,
@@ -170,7 +219,9 @@ Ejemplos de uso:
         print(f"\n[✓] Resultados guardados en: {args.output}")
         print(f"[✓] Puedes visualizar el archivo JSON con:")
         print(f"    cat {args.output} | python3 -m json.tool")
-        print(f"    o simplemente: cat {args.output}\n")
+        print(f"    o simplemente: cat {args.output}")
+        print(f"\n[*] Para descargar archivos compartidos, ejecuta:")
+        print(f"    sudo python3 main.py -m 2\n")
         
     except KeyboardInterrupt:
         print("\n\n" + "═" * 70)
