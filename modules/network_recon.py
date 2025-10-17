@@ -648,12 +648,18 @@ class NetworkRecon:
         
         Args:
             quick_scan: Si True, realiza escaneos más rápidos pero menos completos
-            skip_port_scan: Si True, omite el escaneo de puertos
+            skip_port_scan: Si True, omite el escaneo de puertos (solo descubre hosts)
         """
         # Timestamp de inicio
         start_time = datetime.now()
         self._update_scan_info("start_time", start_time.isoformat())
-        self._update_scan_info("scan_type", "quick" if quick_scan else "full")
+        
+        if skip_port_scan:
+            self._update_scan_info("scan_type", "discovery_only")
+        elif quick_scan:
+            self._update_scan_info("scan_type", "quick")
+        else:
+            self._update_scan_info("scan_type", "full")
         
         # 1. Información local
         local_info = self.get_local_ip_info()

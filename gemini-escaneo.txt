@@ -1,0 +1,76 @@
+El análisis de riesgo y vulnerabilidades de la red, basado en los datos de escaneo que proporcionaste, se presenta a continuación.
+
+---
+
+## Análisis General de la Red
+
+| Categoría | Detalle |
+| :--- | :--- |
+| **IP Pública y Ubicación** | **185.122.240.210** (Bogotá, Colombia - Liberty Networks). |
+| **Red Local** | **192.168.110.0/24** (Clase C). |
+| **Dispositivo de Escaneo** | Máquina Linux (Kali-amd64) con IP **192.168.110.106**. |
+| **Dispositivos Descubiertos** | **31** anfitriones activos. |
+| **Puertos Abiertos Totales** | **14** puertos TCP abiertos. |
+
+---
+
+## 1. Vulnerabilidades y Riesgos Identificados
+
+Se han identificado dos hosts con puertos abiertos que representan el principal vector de ataque en esta red.
+
+### A. Gateway/Router (192.168.110.1) ⚠️
+
+El dispositivo de puerta de enlace (probablemente el router principal) es el host más crítico, ya que su compromiso puede afectar a toda la red y la conexión a internet.
+
+| Vulnerabilidad | Detalle | Riesgo |
+| :--- | :--- | :--- |
+| **Acceso a Servicios Web (HTTP/HTTPS)** | Los puertos **80/tcp (http)** y **443/tcp (https)** están abiertos y ejecutando **lighttpd**. | **Alto**. Un atacante puede intentar la autenticación de fuerza bruta, buscar vulnerabilidades conocidas en la versión de `lighttpd` (aunque no se especifica), o explotar configuraciones predeterminadas para obtener acceso al panel de administración del router. |
+| **Servicio DNS Abierto** | El puerto **53/tcp (domain)** está abierto con una respuesta inusual: "unknown banner: **None of your business**". | **Medio-Alto**. Aunque es el puerto estándar para DNS, la respuesta de banner no estándar y potencialmente defensiva podría indicar una configuración personalizada. Los riesgos incluyen ataques de amplificación DNS si está mal configurado y se permite recursividad a la red externa, o intoxicación de caché DNS. |
+| **Fabricante Conocido** | El vendor es **Ruijie Networks Co.,LTD**. | **Medio**. Conocer el fabricante permite al atacante buscar *exploits* específicos o vulnerabilidades de día cero relacionadas con los dispositivos de esa marca. |
+
+### B. Grabador de Video en Red (NVR/DVR) (192.168.110.59) ⚠️
+
+Este host, identificado como **XVR.lan**, es probablemente un grabador de video de seguridad (DVR/NVR), lo que lo convierte en un objetivo sensible.
+
+| Vulnerabilidad | Detalle | Riesgo |
+| :--- | :--- | :--- |
+| **Protocolo de Streaming en Tiempo Real (RTSP)** | El puerto **554/tcp (rtsp)** está abierto. | **Alto**. RTSP se utiliza para controlar servidores de streaming de cámaras. Un atacante puede intentar acceder a los *feeds* de video en directo, a menudo con credenciales predeterminadas o débiles, comprometiendo la **privacidad** y la **seguridad física**. |
+| **Acceso a Interfaz Web** | El puerto **80/tcp (http)** está abierto. | **Medio-Alto**. Similar al router, un atacante puede intentar acceder a la interfaz web del XVR para cambiar configuraciones, descargar grabaciones o interrumpir el servicio. |
+
+### C. Hosts con Puertos Dinámicos Abiertos (192.168.110.17, .151, .186, .125) ⚠️
+
+Cuatro hosts muestran los puertos **49152/tcp** y **62078/tcp** abiertos, ambos etiquetados como **tcpwrapped**.
+
+| Vulnerabilidad | Detalle | Riesgo |
+| :--- | :--- | :--- |
+| **Servicios de Alto Rango Dinámico** | Puertos de alto rango efímeros abiertos y envueltos en TCP. Esto es común en servicios como **AirPlay** o interfaces de **depuración/comunicación inter-proceso** de aplicaciones en dispositivos móviles (iPhone/iPad) o sistemas operativos. | **Medio**. El servicio exacto es desconocido ("tcpwrapped"), pero la exposición de un puerto de alto rango puede ser explotada por un atacante para interactuar con un servicio interno o una aplicación que no debería ser accesible desde la red. Si son dispositivos Apple, los puertos podrían estar relacionados con el **iTunes/iOS Service**. |
+
+---
+
+## 2. Recomendaciones de Mitigación
+
+Para reducir los riesgos de la red, se deben aplicar las siguientes medidas de seguridad de inmediato:
+
+### A. Asegurar el Gateway (192.168.110.1) 🔒
+
+1.  **Desactivar Servicios Innecesarios:** Si el router no necesita ser un servidor DNS público, **restringe el acceso al puerto 53/tcp (DNS)** solo a los hosts de confianza en la red local o desactiva la función.
+2.  **Restringir Acceso Web:** Implementa reglas de *firewall* en el router para que el acceso a los puertos **80/tcp** y **443/tcp** del panel de administración **solo sea posible desde IPs específicas** de gestión (por ejemplo, tu máquina de administración) y **nunca desde la red externa (Internet)**.
+3.  **Actualizar Firmware:** Comprueba si hay una **actualización de firmware** disponible para el dispositivo **Ruijie Networks** y aplícala para mitigar vulnerabilidades conocidas.
+
+### B. Proteger el XVR/NVR (192.168.110.59) 🎥
+
+1.  **Cambiar Credenciales Predeterminadas:** Si no se ha hecho, **cambia inmediatamente** el nombre de usuario y la contraseña predeterminados de la interfaz web y el servicio RTSP.
+2.  **Restringir Acceso:** Configura el *firewall* del router para **bloquear el acceso al puerto 554/tcp (RTSP)** y **80/tcp** desde la red externa (Internet). Si el acceso desde la red local no es necesario, **restríngelo también** a un host de visualización dedicado.
+
+### C. Gestión de Puertos Dinámicos (49152 y 62078) 📱💻
+
+1.  **Identificación del Servicio:** Investiga la naturaleza exacta del servicio que utiliza los puertos **49152/tcp** y **62078/tcp** en los hosts afectados. Los MACs podrían ayudar a identificar el tipo de dispositivo (*vendor* desconocido).
+2.  **Cerrar o Filtrar:** Si son servicios de aplicaciones (como copias de seguridad o sincronización de dispositivos móviles), asegúrate de que **no están escuchando en todas las interfaces** de red, sino solo en `localhost` si es posible.
+
+---
+
+## 3. Conclusión de Seguridad
+
+La red tiene una exposición limitada de servicios activos, lo que es generalmente positivo. Sin embargo, los dos hosts con puertos abiertos (**Gateway** y **XVR**) son objetivos de **alto valor** y deben ser asegurados de forma prioritaria. La presencia de hosts con puertos de **alto rango dinámico y desconocidos** (**tcpwrapped**) requiere una investigación adicional para asegurar que no exponen aplicaciones sensibles.
+
+Dado que no se encontraron servicios de intercambio de archivos (SMB/FTP) ni directorios web abiertos, el riesgo de filtración de archivos por esos vectores es bajo, pero el riesgo de **compromiso de infraestructura** (router) y **privacidad/monitoreo** (XVR) es considerable.

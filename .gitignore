@@ -1,18 +1,5 @@
-# Archivos de resultados - Módulo 1
-reconocimiento.json
-scan_*.json
-escaneo_*.json
-auditoria_*.json
-pentest_*.json
-*_scan_*.json
-
-# Archivos de resultados - Módulo 2
-archivos_descargados.json
-harvested_files/
-
-# Otros JSON generados
-*.json
-!requirements.json
+# Environment variables
+.env
 
 # Python
 __pycache__/
@@ -36,23 +23,31 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
+# Virtual environments
 venv/
-env/
 ENV/
-.venv
+env/
 
-# IDEs
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
+# Project specific
+*.json
+!.env.example
+harvested_files/
+loot/
+reports/
+*.pcap
+*.cap
+*.mp4
+*.avi
+*.mkv
+*.bin
 *.log
 
+# Sensitive data
+credentials_found.json
+access_instructions.txt

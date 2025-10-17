@@ -1,0 +1,597 @@
+{
+    "timestamp": "2025-10-16T17:25:14.030436",
+    "scan_info": {
+        "start_time": "2025-10-16T17:25:21.253484",
+        "scan_type": "full"
+    },
+    "network_info": {
+        "range": "192.168.110.0/24"
+    },
+    "wifi_connection": {
+        "connected": true,
+        "interface": "wlan0",
+        "ssid": "N/A",
+        "bssid": "N/A",
+        "frequency": "N/A",
+        "channel": "N/A",
+        "signal_quality": "N/A",
+        "signal_level": "N/A",
+        "ip_address": "192.168.110.106",
+        "netmask": "255.255.255.0",
+        "gateway": "192.168.110.1",
+        "network_range": "192.168.110.0/24"
+    },
+    "public_ip": {
+        "ip": "185.122.240.210",
+        "location": {
+            "country": "Colombia",
+            "region": "Bogota D.C.",
+            "city": "Bogotá",
+            "zip": "111411",
+            "lat": 4.6044,
+            "lon": -74.0858,
+            "timezone": "America/Bogota",
+            "isp": "Liberty Networks De Colombia S.A.S",
+            "org": "Liberty Networks De Colombia",
+            "as": "AS262191 LIBERTY NETWORKS DE COLOMBIA S.A.S"
+        },
+        "error": null
+    },
+    "local_info": {
+        "hostname": "localhost",
+        "platform": "Linux",
+        "platform_release": "6.12.38+kali-amd64",
+        "platform_version": "#1 SMP PREEMPT_DYNAMIC Kali 6.12.38-1kali1 (2025-08-12)",
+        "architecture": "x86_64",
+        "processor": "",
+        "interfaces": [
+            {
+                "name": "lo",
+                "addresses": {
+                    "ipv4": {
+                        "addr": "127.0.0.1",
+                        "netmask": "255.0.0.0",
+                        "broadcast": null
+                    },
+                    "mac": "00:00:00:00:00:00"
+                }
+            },
+            {
+                "name": "eth0",
+                "addresses": {
+                    "mac": "d4:81:d7:91:0e:f4"
+                }
+            },
+            {
+                "name": "wlan0",
+                "addresses": {
+                    "ipv4": {
+                        "addr": "192.168.110.106",
+                        "netmask": "255.255.255.0",
+                        "broadcast": "192.168.110.255"
+                    },
+                    "mac": "28:16:ad:51:70:2a"
+                }
+            }
+        ],
+        "default_gateway": {
+            "gateway": "192.168.110.1",
+            "interface": "wlan0"
+        }
+    },
+    "discovered_hosts": [
+        {
+            "ip": "192.168.110.1",
+            "mac": "70:85:c4:33:8f:15",
+            "vendor": "Ruijie Networks Co.,LTD",
+            "hostname": "Unknown",
+            "ports": [
+                {
+                    "port": 53,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "domain",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": "unknown banner: None of your business"
+                },
+                {
+                    "port": 80,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "http",
+                    "product": "lighttpd",
+                    "version": "",
+                    "extrainfo": ""
+                },
+                {
+                    "port": 443,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "http",
+                    "product": "lighttpd",
+                    "version": "",
+                    "extrainfo": ""
+                }
+            ],
+            "services": {
+                "53/tcp": {
+                    "service": "domain",
+                    "product": "",
+                    "version": ""
+                },
+                "80/tcp": {
+                    "service": "http",
+                    "product": "lighttpd",
+                    "version": ""
+                },
+                "443/tcp": {
+                    "service": "http",
+                    "product": "lighttpd",
+                    "version": ""
+                }
+            },
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.59",
+            "mac": "d4:43:0e:1c:75:4f",
+            "vendor": "Unknown",
+            "hostname": "XVR.lan",
+            "ports": [
+                {
+                    "port": 80,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "http",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                },
+                {
+                    "port": 554,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "rtsp",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                }
+            ],
+            "services": {
+                "80/tcp": {
+                    "service": "http",
+                    "product": "",
+                    "version": ""
+                },
+                "554/tcp": {
+                    "service": "rtsp",
+                    "product": "",
+                    "version": ""
+                }
+            },
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.17",
+            "mac": "ca:df:f6:78:f6:c2",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [
+                {
+                    "port": 49152,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                },
+                {
+                    "port": 62078,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                }
+            ],
+            "services": {
+                "49152/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                },
+                "62078/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                }
+            },
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.4",
+            "mac": "c8:c7:50:1c:13:96",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.47",
+            "mac": "c8:e2:65:c3:0d:a2",
+            "vendor": "Unknown",
+            "hostname": "DESKTOP-BJ4E2PT.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.8",
+            "mac": "da:e5:91:cb:ec:c3",
+            "vendor": "Unknown",
+            "hostname": "Galaxy-A16-5G.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.96",
+            "mac": "38:d5:7a:cc:b2:d9",
+            "vendor": "Unknown",
+            "hostname": "DESKTOP-U4T8KLN.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.134",
+            "mac": "50:c2:e8:18:6f:ab",
+            "vendor": "Unknown",
+            "hostname": "DESKTOP-U4T8KLN.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.66",
+            "mac": "50:c2:e8:5e:01:b3",
+            "vendor": "CLOUD NETWORK TECHNOLOGY SINGAPORE PTE. LTD.",
+            "hostname": "LAPTOP-AIIDSF0T.lan",
+            "ports": [
+                {
+                    "port": 6646,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                }
+            ],
+            "services": {
+                "6646/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                }
+            },
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.167",
+            "mac": "28:39:26:9b:b6:ab",
+            "vendor": "Unknown",
+            "hostname": "DESKTOP-9SM2KRD.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.201",
+            "mac": "2e:2f:d4:a3:af:f6",
+            "vendor": "Unknown",
+            "hostname": "Redmi-Note-13-Pro.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.60",
+            "mac": "66:18:d5:17:9d:8e",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.151",
+            "mac": "92:04:2d:61:a7:a4",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [
+                {
+                    "port": 49152,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                },
+                {
+                    "port": 62078,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                }
+            ],
+            "services": {
+                "49152/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                },
+                "62078/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                }
+            },
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.117",
+            "mac": "9e:9d:a6:b6:e2:ec",
+            "vendor": "Unknown",
+            "hostname": "Redmi-Note-13.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.186",
+            "mac": "ae:5c:8b:e1:06:9a",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [
+                {
+                    "port": 49152,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                },
+                {
+                    "port": 62078,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                }
+            ],
+            "services": {
+                "49152/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                },
+                "62078/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                }
+            },
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.105",
+            "mac": "12:4a:4c:98:a6:f5",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.28",
+            "mac": "b4:0e:de:ca:1c:e6",
+            "vendor": "Unknown",
+            "hostname": "uriiii.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.87",
+            "mac": "06:96:b4:5b:42:00",
+            "vendor": "Unknown",
+            "hostname": "Redmi-10C.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.178",
+            "mac": "84:fd:d1:a3:eb:52",
+            "vendor": "Unknown",
+            "hostname": "DESKTOP-HO2QUC9.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.142",
+            "mac": "c6:58:b2:7f:ec:d5",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.199",
+            "mac": "36:1e:80:88:b7:7c",
+            "vendor": "Unknown",
+            "hostname": "Galaxy-A16-5G.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.250",
+            "mac": "d6:83:bd:e0:85:7f",
+            "vendor": "Unknown",
+            "hostname": "Redmi-Note-11S.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.232",
+            "mac": "32:4b:ff:c1:35:4f",
+            "vendor": "Unknown",
+            "hostname": "Galaxy-A16-5G.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.238",
+            "mac": "b6:0b:4b:64:39:f9",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.126",
+            "mac": "fe:30:15:16:0d:50",
+            "vendor": "Unknown",
+            "hostname": "A04e-de-Yodi-Marcela.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.150",
+            "mac": "7e:af:81:cf:69:de",
+            "vendor": "Unknown",
+            "hostname": "Galaxy-A04e.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.125",
+            "mac": "ae:00:e1:24:74:c2",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [
+                {
+                    "port": 49152,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                },
+                {
+                    "port": 62078,
+                    "protocol": "tcp",
+                    "state": "open",
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": "",
+                    "extrainfo": ""
+                }
+            ],
+            "services": {
+                "49152/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                },
+                "62078/tcp": {
+                    "service": "tcpwrapped",
+                    "product": "",
+                    "version": ""
+                }
+            },
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.195",
+            "mac": "5e:83:aa:07:c0:ee",
+            "vendor": "Unknown",
+            "hostname": "Galaxy-A04e.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.12",
+            "mac": "12:ce:ff:3c:37:02",
+            "vendor": "Unknown",
+            "hostname": "Redmi-13C.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.231",
+            "mac": "e4:aa:e4:b7:6b:4b",
+            "vendor": "Xiaomi Communications Co Ltd",
+            "hostname": "Xiaomi-14T-Pro-TATO.lan",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        },
+        {
+            "ip": "192.168.110.234",
+            "mac": "1e:3b:c8:bc:73:68",
+            "vendor": "Unknown",
+            "hostname": "Unknown",
+            "ports": [],
+            "services": {},
+            "os_detection": {}
+        }
+    ],
+    "scan_summary": {
+        "scan_duration_seconds": 1163.83027,
+        "total_hosts_discovered": 31,
+        "total_open_ports": 14,
+        "network_range_scanned": "192.168.110.0/24",
+        "end_time": "2025-10-16T17:44:45.083754"
+    }
+}
+{
+    "timestamp": "2025-10-16T17:45:40.252827",
+    "reconnaissance_file": "reconocimiento.json",
+    "output_directory": "harvested_files",
+    "hosts_analyzed": [],
+    "files_downloaded": [],
+    "statistics": {
+        "total_hosts": 31,
+        "hosts_with_shares": 0,
+        "smb_shares_found": 0,
+        "ftp_accessible": 0,
+        "http_directories_found": 0,
+        "total_files_downloaded": 0,
+        "total_size_bytes": 0,
+        "failed_downloads": 0
+    }
+}
