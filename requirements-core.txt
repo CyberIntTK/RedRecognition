@@ -1,0 +1,38 @@
+# =============================================================================
+# RED RECOGNITION - DEPENDENCIAS CORE (Esenciales y compatibles)
+# =============================================================================
+# Usa este archivo si requirements.txt da problemas con algunas dependencias
+
+# Core networking (ESENCIALES)
+scapy>=2.5.0
+python-nmap>=0.7.1
+netifaces>=0.11.0
+requests>=2.31.0
+
+# File harvesting
+pysmb>=1.2.9
+
+# SSH & Remote access
+paramiko>=3.0.0
+
+# Video capture (IMPORTANTE para cámaras)
+opencv-python>=4.8.0
+
+# HTTP exploitation
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Report generation
+jinja2>=3.1.0
+
+# Configuration
+python-dotenv>=1.0.0
+
+# Utilities
+colorama>=0.4.6
+tqdm>=4.66.0
+python-dateutil>=2.8.0
+
+# Note: sqlite3 comes built-in with Python
+# Note: impacket, pwntools, pycurl are optional - install manually if needed
+
