@@ -7,6 +7,7 @@ Optimizado para Kali Linux con auto-detección de red WiFi
 """
 
 import json
+import os
 import socket
 import platform
 import subprocess
@@ -40,6 +41,9 @@ class NetworkRecon:
         self.lock = threading.Lock()
         self.wifi_info = None  # Información de la conexión WiFi
         
+        # Cargar escaneos previos si existen
+        self.previous_scan = self._load_previous_scan()
+        
         # Estructura de datos para almacenar resultados
         self.results = {
             "timestamp": datetime.now().isoformat(),
@@ -54,6 +58,19 @@ class NetworkRecon:
         
         # Guardar estructura inicial
         self._save_results()
+    
+    def _load_previous_scan(self) -> Dict:
+        """Carga un escaneo previo si existe"""
+        try:
+            if os.path.exists(self.output_file):
+                with open(self.output_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    if data.get('discovered_hosts'):
+                        print(f"[*] Escaneo previo encontrado con {len(data['discovered_hosts'])} hosts")
+                        return data
+        except Exception as e:
+            pass
+        return {}
     
     def _save_results(self):
         """Guarda los resultados en el archivo JSON de forma segura"""
@@ -680,10 +697,44 @@ class NetworkRecon:
         if not skip_port_scan and discovered_hosts:
             print(f"\n[*] Iniciando escaneo de puertos en {len(discovered_hosts)} hosts...")
             
+            # Crear un diccionario de hosts previos para búsqueda rápida
+            previous_hosts = {}
+            if self.previous_scan and self.previous_scan.get('discovered_hosts'):
+                for prev_host in self.previous_scan['discovered_hosts']:
+                    previous_hosts[prev_host['ip']] = prev_host
+            
+            hosts_to_scan = 0
+            hosts_skipped = 0
+            
             for idx, host in enumerate(discovered_hosts):
-                print(f"\n[*] Escaneando host {idx+1}/{len(discovered_hosts)}: {host['ip']}")
+                host_ip = host['ip']
                 
-                port_info = self.scan_host_ports(host['ip'], quick=quick_scan)
+                # Verificar si este host ya fue escaneado previamente
+                if host_ip in previous_hosts:
+                    prev_host = previous_hosts[host_ip]
+                    
+                    # Si el host previo tiene puertos escaneados, reutilizar
+                    if prev_host.get('ports') and len(prev_host['ports']) > 0:
+                        print(f"\n[*] Host {idx+1}/{len(discovered_hosts)}: {host_ip}")
+                        print(f"    [✓] Ya escaneado previamente con {len(prev_host['ports'])} puertos - REUTILIZANDO datos")
+                        
+                        # Reutilizar información previa
+                        host['ports'] = prev_host['ports']
+                        host['services'] = prev_host.get('services', {})
+                        host['os_detection'] = prev_host.get('os_detection', {})
+                        
+                        hosts_skipped += 1
+                        
+                        # Guardar
+                        self.results["discovered_hosts"] = discovered_hosts
+                        self._save_results()
+                        continue
+                
+                # Si no está en caché o no tiene puertos, escanear
+                print(f"\n[*] Escaneando host {idx+1}/{len(discovered_hosts)}: {host_ip}")
+                hosts_to_scan += 1
+                
+                port_info = self.scan_host_ports(host_ip, quick=quick_scan)
                 
                 # Actualizar información del host
                 host['ports'] = port_info['open_ports']
@@ -693,6 +744,11 @@ class NetworkRecon:
                 # Guardar después de cada host
                 self.results["discovered_hosts"] = discovered_hosts
                 self._save_results()
+            
+            if hosts_skipped > 0:
+                print(f"\n[✓] Optimización: {hosts_skipped} hosts saltados (ya escaneados previamente)")
+                print(f"[✓] Hosts escaneados: {hosts_to_scan}")
+                print(f"[✓] Tiempo ahorrado: ~{hosts_skipped * 30} segundos")
         
         # 6. Generar resumen
         end_time = datetime.now()
